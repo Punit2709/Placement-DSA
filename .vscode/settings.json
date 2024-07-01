@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.ejs": "html",
+    "*.tcc": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp"
+  }
+}
