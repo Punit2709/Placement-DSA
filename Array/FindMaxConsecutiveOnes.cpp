@@ -13,8 +13,8 @@ int findMaxConsecutiveOnes(vector<int> &nums){
         else{
             if (currentCount > count){
                 count = currentCount;
-                currentCount = 0;
             }
+            currentCount = 0;
         }
     }
     if (currentCount > count){
