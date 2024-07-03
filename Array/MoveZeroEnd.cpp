@@ -42,13 +42,16 @@ void moveZeroes2(vector<int> &nums){
     while (j < n)
     {
         nums[j] = 0;
-        j++
+        j++;
     }
     
 }
 
 int main()
 {
-
+    vector<int> nums = {0, 2, 3, 1, 0, 5, 0};
+    moveZeroes2(nums);
+    for(auto x: nums)
+        cout << x << " ";
     return 0;
 }
