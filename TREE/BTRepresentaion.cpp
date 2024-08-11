@@ -31,13 +31,30 @@ void inorder_traversal(BTNode *root){
 }
 
 void inorder_traversal_iterative(BTNode *root){
-    BTNode *temp = root;
-    while (temp == nullptr) {
-        temp = temp -> left;
-    }
-    
-}
+    vector<int> ans;
+    if (root == nullptr) return;
 
+    stack<BTNode*> st;
+    BTNode* node = root;
+
+    while(true){
+        if(node != nullptr){
+            st.push(node);
+            node = node -> left;
+        }
+        else{
+            if(st.empty() == true) break;
+
+            node = st.top();
+            st.pop();
+            ans.push_back(node -> val);
+            node = node -> right; 
+        }
+    }
+    for(auto x : ans){
+        cout << x << " ";
+    }    
+}
 
 void postorder_traversal(BTNode *root){
     if(root == nullptr){
@@ -74,6 +91,27 @@ void postorder_traversal_iterative(BTNode *root){
         cout << x << " ";   
 }
 
+void postorder_2_stack(BTNode *root){
+    stack<BTNode *> st1;
+    stack<BTNode *> st2;
+
+    if(root == nullptr) return;
+
+    st1.push(root);
+    while(!st1.empty()){
+        BTNode* node = st1.top();
+        st1.pop();
+
+        st2.push(node);
+        if(node -> left != nullptr) st1.push(node -> left);
+        if(node -> right != nullptr) st1.push(node -> right);
+    }
+
+    while(!st2.empty()){
+        cout << st2.top() -> val << " ";
+        st2.pop();
+    }
+}
 
 void preorder_traversal(BTNode *root){
     if(root == nullptr){
@@ -103,10 +141,8 @@ void preorder_traversal_iterative(BTNode *root){
             ans.push_back(current -> val);
             if(current -> right != nullptr) st.push(current -> right); 
             if(current -> left != nullptr) st.push(current -> left); 
-
         }
     }
-
     for(auto x : ans)
         cout << x << " ";   
 }
@@ -141,6 +177,26 @@ void levelorder_traversal(BTNode *root){
     }
 }
 
+int maxDepth(BTNode* root){
+    if(root == nullptr) return 0;
+
+    int left = maxDepth(root -> left);
+    int right = maxDepth(root -> right);
+
+    return 1 + max(left, right);
+}
+
+bool isSameTree(BTNode* p, BTNode* q){
+    if(p == nullptr && q == nullptr){
+        return true;
+    }
+
+    if(p == nullptr || q == nullptr) return false;
+
+    if(p -> val != q ->val) return false;
+
+    return isSameTree(p ->left, q->left) && isSameTree(p->right, q->right);
+}
 
 int main()
 {
@@ -159,20 +215,24 @@ int main()
     root->right = r_right;
     r_right->right = r_right1;
 
-    // cout << root -> left -> left -> val << endl;
-    // cout << root -> right -> right -> val << endl;
-
     cout << "Inorder Traversal" << ": ";
     inorder_traversal(root);
     cout << endl;
+
+    cout << "Iterative Inorder Traversal" << ": ";
+    inorder_traversal_iterative(root);
+    cout << endl;
+    cout << endl;
+
 
     cout << "Postorder Traversal" << ": ";
     postorder_traversal(root);
     cout << endl;
 
-    // cout << "Interactive Postorder Traversal" << ": ";
-    // postorder_traversal_iterative(root);
-    // cout << endl;
+    cout << "Interactive Postorder Traversal" << ": ";
+    postorder_2_stack(root);
+    cout << endl;
+    cout << endl;
 
     cout << "Preorder Traversal" << ": ";
     preorder_traversal(root);
@@ -180,6 +240,7 @@ int main()
 
     cout << "Iterative Preorder Traversal" << ": ";
     preorder_traversal_iterative(root);
+    cout << endl;    
     cout << endl;    
 
     cout << "Level order Traversal" << ": ";
